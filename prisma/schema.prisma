@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StatusTugas {
+  BELUM
+  SELESAI
+  EXPIRED
+}
+
+model Matkul {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  sks       Int
+  deskripsi String?
+  tugas     Tugas[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tugas {
+  id         Int         @id @default(autoincrement())
+  nama       String
+  deskripsi  String?
+  deadline   DateTime?
+  status     StatusTugas @default(BELUM)
+  matkulId   Int
+  matkul     Matkul      @relation(fields: [matkulId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Attendance {
+    id      String         @id@default(cuid())
+    userId  String
+    date    DateTime
+    status  AttendanceStatus
+    reason  String?
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+
+    @@unique([userId, date])
+}
+
+enum AttendanceStatus {
+    HADIR
+    BOLOS
+    IZIN
+}

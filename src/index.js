@@ -1,13 +1,9 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
+// src/index.js
+require("dotenv").config();
+const app = require("./app");
 
-app.use(cors());
-app.use(express.json());
+const PORT = process.env.PORT || 4000;
 
-app.get("/", (req, res) => {
-  res.json({ message: "Backend berjalan!" });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on port", PORT));
