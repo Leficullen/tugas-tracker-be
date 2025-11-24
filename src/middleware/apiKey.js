@@ -1,6 +1,8 @@
 function apiKeyMiddleware(req, res, next) {
   console.log("Incoming API KEY:", req.headers["x-api-key"]);
   console.log("Backend API KEY:", process.env.API_KEY);
+  console.log(req.headers); 
+
 
   const key = req.headers["x-api-key"];
 
