@@ -1,6 +1,4 @@
-const app = require("../src/app");
+import app from "../src/app.js";
+import { createServer } from "@vercel/node";
 
-module.exports = (req, res) => {
-
-  return app(req, res);
-};
+export default createServer(app);
