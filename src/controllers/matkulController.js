@@ -14,6 +14,11 @@ async function getAllMatkul(req, res) {
   }
 }
 
+// Controller
+//    handle method (GET, POST, UPDATE, DELETE)
+//        validasi data, check auth
+//        service (logic)
+
 // CREATE matkul
 async function createMatkul(req, res) {
   const { nama, sks, deskripsi } = req.body;
