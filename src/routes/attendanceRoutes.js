@@ -5,15 +5,16 @@ const express = require("express");
 const router = express.Router();
 
 // POST /attendance/present
-router.post("/attendance/present", postPresent);
+// POST /attendance/attendance/present
+router.post("/present", postPresent);
 
 // POST /attendance/izin
-router.post("/attendance/izin", createIzin);
+router.post("/izin", createIzin);
 
 //GET /attendance/month
-router.get("/attendance/month", getMonth);
+router.get("/month", getMonth);
 
 //POST /attendance/autobolos
-router.post("/attendance/autobolos", postBolos);
+router.post("/autobolos", postBolos);
 
 module.exports = router;
