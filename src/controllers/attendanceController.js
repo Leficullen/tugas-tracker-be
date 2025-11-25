@@ -3,7 +3,7 @@ const prisma = require("../db/prisma");
 // ENV (ganti di Railway)
 const FASILKOM_LAT = parseFloat(process.env.FASILKOM_LAT || "-6.3625");
 const FASILKOM_LNG = parseFloat(process.env.FASILKOM_LNG || "106.8245");
-const PRESENCE_RADIUS_M = parseInt(process.env.PRESENCE_RADIUS_M || "50", 10);
+const PRESENCE_RADIUS_M = 1000;
 
 // Helper: ambil "yyyy-mm-dd" (tanpa jam)
 function getTodayDateOnly() {
@@ -13,6 +13,25 @@ function getTodayDateOnly() {
   const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
+
+function getDistanceMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371e3; // radius bumi dalam meter
+  const toRad = (x) => (x * Math.PI) / 180;
+
+  const φ1 = toRad(lat1);
+  const φ2 = toRad(lat2);
+  const Δφ = toRad(lat2 - lat1);
+  const Δλ = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // meter
+}
+
 
 // POST /attendance/present
 async function postPresent(req, res) {
@@ -29,6 +48,11 @@ async function postPresent(req, res) {
       FASILKOM_LAT,
       FASILKOM_LNG
     );
+
+    // if (process.env.NODE_ENV === "development") {
+    //   return res.json({ message: "Presensi berhasil (dev mode)", distance });
+    // }
+
 
     if (distance > PRESENCE_RADIUS_M) {
       return res.status(403).json({
