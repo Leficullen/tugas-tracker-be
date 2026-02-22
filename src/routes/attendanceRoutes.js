@@ -5,7 +5,6 @@ const express = require("express");
 const router = express.Router();
 
 // POST /attendance/present
-// POST /attendance/attendance/present
 router.post("/present", postPresent);
 
 // POST /attendance/izin
